@@ -23,7 +23,20 @@ export async function invokeCommand(cmd, args = {}) {
     }
   } else {
     // Development / Browser / Testing fallback
+    logSimulationNotice(cmd);
     return handleBrowserMock(cmd, args);
+  }
+}
+
+let warnedSimulation = false;
+function logSimulationNotice(cmd) {
+  if (!warnedSimulation && typeof console !== 'undefined') {
+    warnedSimulation = true;
+    console.info(
+      '%c[LeafForge IPC Simulation]%c Running in browser/development mock mode (Tauri native backend not detected). File I/O and TeX tools are simulated.',
+      'background: #047857; color: white; padding: 2px 6px; border-radius: 3px; font-weight: bold;',
+      'color: #10b981; font-weight: normal;'
+    );
   }
 }
 

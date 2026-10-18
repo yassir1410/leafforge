@@ -9,7 +9,7 @@
     "preview": "vite preview",
     "test": "vitest run",
     "test:watch": "vitest",
-    "tauri": "tauri"
+    "tauri": "node ./bin/tauri.mjs"
   },
   "dependencies": {
     "@monaco-editor/react": "^4.7.0",

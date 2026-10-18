@@ -2,10 +2,16 @@ import { create } from 'zustand';
 import { invokeCommand } from '../lib/tauri';
 import { useProjectStore } from './useProjectStore';
 
+// In-flight save tracking and queue per file path
+const savingTabIds = new Set();
+const pendingSaveQueues = new Set();
+
 export const useEditorStore = create((set, get) => ({
   tabs: [],
   activeTabId: null,
   pendingCloseTab: null,
+  isSaving: false,
+  isTabSaving: (tabId) => savingTabIds.has(tabId),
 
   getActiveTab: () => {
     const { tabs, activeTabId } = get();
@@ -65,33 +71,72 @@ export const useEditorStore = create((set, get) => ({
     }));
   },
 
+  /**
+   * Concurrency-safe saveTab:
+   * 1. Snapshots content at moment of save initiation.
+   * 2. Serializes in-flight saves per tab. If already saving, queues another save after current one finishes.
+   * 3. On success, updates originalContent to the snapshot.
+   * 4. Accurately preserves isDirty if newer edits arrived while async write was in-flight.
+   */
   saveTab: async (tabId) => {
     const { tabs } = get();
     const tab = tabs.find((t) => t.id === tabId);
     if (!tab) return;
 
+    // If already saving this tab, queue a follow-up save and return
+    if (savingTabIds.has(tabId)) {
+      pendingSaveQueues.add(tabId);
+      return;
+    }
+
     const project = useProjectStore.getState().project;
     if (!project) return;
+
+    savingTabIds.add(tabId);
+    set({ isSaving: true });
+
+    // Snapshot content strictly before starting async I/O
+    const contentSnapshot = tab.content;
 
     try {
       await invokeCommand('write_file_content', {
         project_root: project.path,
         file_path: tab.path,
-        content: tab.content,
+        content: contentSnapshot,
       });
 
+      // Update store state safely against concurrent edits
       set((state) => ({
-        tabs: state.tabs.map((t) =>
-          t.id === tabId ? { ...t, originalContent: t.content, isDirty: false } : t
-        ),
+        tabs: state.tabs.map((t) => {
+          if (t.id === tabId) {
+            // If the user made further edits during the write, isDirty must remain true!
+            const hasNewEdits = t.content !== contentSnapshot;
+            return {
+              ...t,
+              originalContent: contentSnapshot,
+              isDirty: hasNewEdits,
+            };
+          }
+          return t;
+        }),
       }));
 
-      // Refresh project explorer file tree to update sizes/timestamps
+      // Refresh project file tree in background
       useProjectStore.getState().refreshFileTree();
     } catch (err) {
       console.error(`Failed to save file ${tab.path}:`, err);
       useProjectStore.getState().setError(`Save error: ${err.message}`);
       throw err;
+    } finally {
+      savingTabIds.delete(tabId);
+      set({ isSaving: savingTabIds.size > 0 });
+
+      // If edits arrived while saving or another save was requested, flush the queue
+      if (pendingSaveQueues.has(tabId)) {
+        pendingSaveQueues.delete(tabId);
+        // Process follow-up save with newest content
+        get().saveTab(tabId).catch(console.error);
+      }
     }
   },
 
@@ -100,6 +145,15 @@ export const useEditorStore = create((set, get) => ({
     if (activeTabId) {
       await saveTab(activeTabId);
     }
+  },
+
+  /**
+   * Flushes all dirty tabs immediately (e.g. before project change or tab closing)
+   */
+  flushPendingSaves: async () => {
+    const { tabs, saveTab } = get();
+    const dirtyTabs = tabs.filter((t) => t.isDirty);
+    await Promise.all(dirtyTabs.map((t) => saveTab(t.id)));
   },
 
   saveViewState: (tabId, viewState) => {
@@ -156,7 +210,10 @@ export const useEditorStore = create((set, get) => ({
     });
   },
 
-  closeAllTabs: () => {
+  closeAllTabs: async () => {
+    const { flushPendingSaves } = get();
+    // Flush pending saves before closing all tabs
+    await flushPendingSaves().catch(console.error);
     set({ tabs: [], activeTabId: null, pendingCloseTab: null });
   },
 }));

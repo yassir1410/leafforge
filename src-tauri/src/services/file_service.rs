@@ -115,7 +115,7 @@ impl FileService {
         file_path: &Path,
         content: &str,
     ) -> Result<(), LeafForgeError> {
-        let validated_path = PathGuard::validate_within_project(project_root, file_path)?;
+        let validated_path = PathGuard::validate_for_write(project_root, file_path)?;
 
         let parent_dir = validated_path
             .parent()
@@ -152,7 +152,7 @@ impl FileService {
         target_path: &Path,
         initial_content: Option<&str>,
     ) -> Result<PathBuf, LeafForgeError> {
-        let validated_path = PathGuard::validate_within_project(project_root, target_path)?;
+        let validated_path = PathGuard::validate_for_write(project_root, target_path)?;
 
         if validated_path.exists() {
             return Err(LeafForgeError::Project(format!(
@@ -204,7 +204,7 @@ impl FileService {
         new_name: &str,
     ) -> Result<PathBuf, LeafForgeError> {
         PathGuard::is_safe_node_name(new_name)?;
-        let validated_old = PathGuard::validate_within_project(project_root, old_path)?;
+        let validated_old = PathGuard::validate_for_destructive_action(project_root, old_path)?;
 
         if !validated_old.exists() {
             return Err(LeafForgeError::NotFound(format!(
@@ -235,15 +235,7 @@ impl FileService {
 
     /// Deletes a file or directory within the project
     pub fn delete_node(project_root: &Path, target_path: &Path) -> Result<(), LeafForgeError> {
-        let validated_path = PathGuard::validate_within_project(project_root, target_path)?;
-
-        // Never allow deleting the project root itself through this command
-        let canonical_root = project_root.canonicalize()?;
-        if validated_path == canonical_root {
-            return Err(LeafForgeError::Security(
-                "Cannot delete the project root directory".to_string(),
-            ));
-        }
+        let validated_path = PathGuard::validate_for_destructive_action(project_root, target_path)?;
 
         if !validated_path.exists() {
             return Err(LeafForgeError::NotFound(format!(

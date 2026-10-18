@@ -53,7 +53,7 @@ export function BottomPanel() {
   return (
     <div
       style={{ height: `${bottomPanelHeight}px` }}
-      className="flex flex-col bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 shrink-0 z-10 transition-all select-none"
+      className="flex flex-col bg-slate-50 dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 shrink-0 z-10 transition-all select-none min-h-0"
     >
       {/* Top resize handle */}
       <ResizableHandle

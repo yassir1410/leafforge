@@ -8,7 +8,7 @@ import { EditorTabs } from './EditorTabs';
 import { FileCode, Sparkles } from 'lucide-react';
 
 export function MonacoSourceEditor({ editorRef }) {
-  const { tabs, activeTabId, updateContent, saveViewState, saveActiveTab } = useEditorStore();
+  const { tabs, activeTabId, updateContent, saveViewState, saveActiveTab, saveTab } = useEditorStore();
   const settings = useSettingsStore();
   const { theme } = useUIStore();
 
@@ -39,23 +39,39 @@ export function MonacoSourceEditor({ editorRef }) {
     editor.focus();
   };
 
-  // Preserve and restore view state across tab switching
+  // Preserve and restore view state and flush pending autosaves across tab switching
   useEffect(() => {
     const editor = internalEditorRef.current;
-    if (!editor) return;
 
     if (prevTabIdRef.current && prevTabIdRef.current !== activeTabId) {
-      // Save view state of previous tab
-      const state = editor.saveViewState();
-      saveViewState(prevTabIdRef.current, state);
+      // Clear pending timer for previous tab and flush immediately
+      if (autoSaveTimerRef.current) {
+        clearTimeout(autoSaveTimerRef.current);
+        autoSaveTimerRef.current = null;
+      }
+      const prevTab = tabs.find((t) => t.id === prevTabIdRef.current);
+      if (prevTab && prevTab.isDirty) {
+        saveTab(prevTab.id).catch(console.error);
+      }
+
+      if (editor) {
+        const state = editor.saveViewState();
+        saveViewState(prevTabIdRef.current, state);
+      }
     }
 
     prevTabIdRef.current = activeTabId;
 
-    if (activeTab?.viewState) {
+    if (editor && activeTab?.viewState) {
       editor.restoreViewState(activeTab.viewState);
     }
-  }, [activeTabId, activeTab?.viewState, saveViewState]);
+
+    return () => {
+      if (autoSaveTimerRef.current) {
+        clearTimeout(autoSaveTimerRef.current);
+      }
+    };
+  }, [activeTabId, activeTab?.viewState, saveViewState, tabs, saveTab]);
 
   // Handle content change
   const handleChange = (value) => {
@@ -68,8 +84,9 @@ export function MonacoSourceEditor({ editorRef }) {
       if (autoSaveTimerRef.current) {
         clearTimeout(autoSaveTimerRef.current);
       }
+      const targetTabId = activeTabId;
       autoSaveTimerRef.current = setTimeout(() => {
-        saveActiveTab();
+        saveTab(targetTabId).catch(console.error);
       }, settings.autoSaveDelay || 1500);
     }
   };

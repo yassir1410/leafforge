@@ -1,3 +1,4 @@
+use std::fs;
 use std::path::{Component, Path, PathBuf};
 use crate::models::error::LeafForgeError;
 
@@ -40,6 +41,68 @@ impl PathGuard {
             // Ensure no dangerous components like ParentDir ('..') in the relative part
             Self::normalize_and_validate_nonexistent(&canonical_root, &full_path)
         }
+    }
+
+    /// Validates that a target path is strictly within the project and is safe for writing.
+    /// Explicitly forbids writing through symlinks to prevent TOCTOU symlink attacks.
+    pub fn validate_for_write(
+        project_root: &Path,
+        target_path: &Path,
+    ) -> Result<PathBuf, LeafForgeError> {
+        let canonical_root = project_root
+            .canonicalize()
+            .map_err(|e| LeafForgeError::Project(format!("Invalid project root: {e}")))?;
+
+        let full_path = if target_path.is_absolute() {
+            target_path.to_path_buf()
+        } else {
+            canonical_root.join(target_path)
+        };
+
+        // If target or symlink exists on disk, check if it is a symlink via symlink_metadata
+        if let Ok(meta) = fs::symlink_metadata(&full_path) {
+            if meta.file_type().is_symlink() {
+                return Err(LeafForgeError::Security(
+                    "Access denied: writing through symlinks is forbidden for security".to_string(),
+                ));
+            }
+        }
+
+        let validated = Self::validate_within_project(project_root, target_path)?;
+        Ok(validated)
+    }
+
+    /// Validates that a target node is safe to be deleted or renamed.
+    /// Prevents deleting or renaming the project root, .git, or system files.
+    pub fn validate_for_destructive_action(
+        project_root: &Path,
+        target_path: &Path,
+    ) -> Result<PathBuf, LeafForgeError> {
+        let canonical_root = project_root
+            .canonicalize()
+            .map_err(|e| LeafForgeError::Project(format!("Invalid project root: {e}")))?;
+
+        let validated = Self::validate_within_project(project_root, target_path)?;
+
+        // 1. Never allow deleting or renaming the project root itself
+        if validated == canonical_root {
+            return Err(LeafForgeError::Security(
+                "Access denied: cannot delete or rename the project root directory".to_string(),
+            ));
+        }
+
+        // 2. Never allow deleting or renaming the .git repository directory or its files
+        if let Ok(rel) = validated.strip_prefix(&canonical_root) {
+            if let Some(first_component) = rel.components().next() {
+                if first_component.as_os_str() == ".git" {
+                    return Err(LeafForgeError::Security(
+                        "Access denied: cannot modify or delete files inside .git repository".to_string(),
+                    ));
+                }
+            }
+        }
+
+        Ok(validated)
     }
 
     /// Normalizes and checks a path that may not yet exist on disk
@@ -90,7 +153,6 @@ impl PathGuard {
         // Reconstruct path downwards
         let mut result = canonical_ancestor;
         for part in uncreated_parts.iter().rev() {
-            // Check for symlinks or components
             result.push(part);
         }
 
@@ -128,6 +190,11 @@ impl PathGuard {
         if trimmed == "." || trimmed == ".." {
             return Err(LeafForgeError::Security(
                 "Directory traversal names are not allowed".to_string(),
+            ));
+        }
+        if trimmed == ".git" {
+            return Err(LeafForgeError::Security(
+                "Cannot use protected .git name".to_string(),
             ));
         }
         if trimmed.contains('/') || trimmed.contains('\\') || trimmed.contains('\0') {
@@ -197,10 +264,48 @@ mod tests {
     }
 
     #[test]
+    fn test_symlink_write_forbidden() {
+        let dir = tempdir().unwrap();
+        let project_root = dir.path();
+        let real_file = project_root.join("real.tex");
+        fs::write(&real_file, "hello").unwrap();
+
+        let symlink_file = project_root.join("symlink.tex");
+        #[cfg(unix)]
+        {
+            std::os::unix::fs::symlink(&real_file, &symlink_file).unwrap();
+            let result = PathGuard::validate_for_write(project_root, &symlink_file);
+            assert!(result.is_err(), "Writing through symlink must be rejected");
+        }
+    }
+
+    #[test]
+    fn test_destructive_protection() {
+        let dir = tempdir().unwrap();
+        let project_root = dir.path();
+
+        // 1. Cannot delete project root
+        let root_result = PathGuard::validate_for_destructive_action(project_root, project_root);
+        assert!(root_result.is_err(), "Project root cannot be deleted or renamed");
+
+        // 2. Cannot delete .git folder
+        let git_dir = project_root.join(".git");
+        fs::create_dir_all(&git_dir).unwrap();
+        let git_result = PathGuard::validate_for_destructive_action(project_root, &git_dir);
+        assert!(git_result.is_err(), ".git directory cannot be deleted or renamed");
+
+        // 3. Normal file can be deleted
+        let normal_file = project_root.join("chapter.tex");
+        File::create(&normal_file).unwrap();
+        assert!(PathGuard::validate_for_destructive_action(project_root, &normal_file).is_ok());
+    }
+
+    #[test]
     fn test_safe_node_name() {
         assert!(PathGuard::is_safe_node_name("main.tex").is_ok());
         assert!(PathGuard::is_safe_node_name("my-folder").is_ok());
         assert!(PathGuard::is_safe_node_name("..").is_err());
+        assert!(PathGuard::is_safe_node_name(".git").is_err());
         assert!(PathGuard::is_safe_node_name("foo/bar").is_err());
         assert!(PathGuard::is_safe_node_name("").is_err());
     }

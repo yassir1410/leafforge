@@ -395,14 +395,21 @@ export function DeleteConfirmDialog() {
     >
       <div className="space-y-3 text-xs text-slate-700 dark:text-slate-300">
         <div className="flex items-start gap-2.5 p-3 rounded-sm bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800/50 text-amber-800 dark:text-amber-200">
-          <AlertTriangle className="w-5 h-5 shrink-0 text-amber-600 dark:text-amber-400" />
-          <p>
-            Are you sure you want to permanently delete{' '}
-            <strong className="font-semibold text-slate-900 dark:text-white">
-              '{deleteConfirmDialog.name}'
-            </strong>
-            ? This action cannot be undone.
-          </p>
+          <AlertTriangle className="w-5 h-5 shrink-0 text-amber-600 dark:text-amber-400 mt-0.5" />
+          <div className="space-y-1.5">
+            <p>
+              Are you sure you want to permanently delete this {deleteConfirmDialog.isDir ? 'folder and all its contents' : 'file'}?
+            </p>
+            <div className="p-1.5 bg-amber-100/60 dark:bg-amber-900/40 rounded text-[11px] font-mono break-all text-slate-800 dark:text-slate-200">
+              <span className="font-semibold">{deleteConfirmDialog.isDir ? '[DIR] ' : '[FILE] '}</span>
+              {deleteConfirmDialog.path}
+            </div>
+            <p className="text-[11px] text-amber-900/80 dark:text-amber-300/80">
+              {deleteConfirmDialog.isDir
+                ? 'Warning: All nested files and subdirectories will be irreversibly removed from disk.'
+                : 'Warning: This file will be permanently removed from disk and cannot be restored from trash.'}
+            </p>
+          </div>
         </div>
 
         {error && (

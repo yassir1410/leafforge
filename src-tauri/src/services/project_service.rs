@@ -49,6 +49,8 @@ impl ProjectService {
             .canonicalize()
             .map_err(|e| LeafForgeError::Io(format!("Failed to canonicalize project path: {e}")))?;
 
+        crate::security::ActiveProjectRegistry::validate_project_root(&canonical_root)?;
+
         let folder_name = project_name
             .map(|s| s.to_string())
             .unwrap_or_else(|| {
@@ -99,6 +101,8 @@ impl ProjectService {
         let canonical_root = project_path
             .canonicalize()
             .map_err(|e| LeafForgeError::Io(format!("Failed to canonicalize project path: {e}")))?;
+
+        crate::security::ActiveProjectRegistry::validate_project_root(&canonical_root)?;
 
         let folder_name = canonical_root
             .file_name()

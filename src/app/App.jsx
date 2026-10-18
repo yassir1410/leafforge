@@ -16,6 +16,7 @@ import { useProjectStore } from '../stores/useProjectStore';
 import { useEditorStore } from '../stores/useEditorStore';
 import { useKeyboardShortcuts } from '../hooks/useKeyboardShortcuts';
 import { useTheme } from '../hooks/useTheme';
+import { ErrorBoundary } from '../components/common/ErrorBoundary';
 import { X } from 'lucide-react';
 
 export function App() {
@@ -60,7 +61,7 @@ export function App() {
   };
 
   return (
-    <div className="h-screen w-screen flex flex-col bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-100 overflow-hidden font-sans">
+    <div className="h-full w-full flex flex-col bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-100 overflow-hidden font-sans">
       {/* Top Application Toolbar */}
       <Toolbar onUndo={handleUndo} onRedo={handleRedo} />
 
@@ -78,12 +79,31 @@ export function App() {
       )}
 
       {/* Main 3-Panel Workspace */}
-      <div className="flex-1 flex overflow-hidden relative">
+      <div className="flex-1 flex overflow-hidden relative min-h-0 min-w-0">
         {/* Left: Project Explorer */}
         <ProjectExplorer />
 
         {/* Center: Monaco Source Editor */}
-        <MonacoSourceEditor editorRef={editorRef} />
+        <ErrorBoundary
+          title="Editor Failed to Render"
+          subtitle="Monaco editor encountered an unexpected error."
+          fallback={(err, reload) => (
+            <div className="flex-1 flex flex-col items-center justify-center p-6 bg-slate-50 dark:bg-slate-900 text-slate-700 dark:text-slate-200">
+              <div className="p-4 bg-white dark:bg-slate-800 rounded border border-slate-200 dark:border-slate-700 max-w-sm text-center space-y-2.5 shadow-sm">
+                <p className="font-semibold text-rose-500 text-xs">Editor Rendering Error</p>
+                <p className="text-[11px] text-slate-500 font-mono break-all">{err?.message || 'Failed to load editor'}</p>
+                <button
+                  onClick={reload}
+                  className="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded text-xs font-medium transition-colors"
+                >
+                  Reload Editor
+                </button>
+              </div>
+            </div>
+          )}
+        >
+          <MonacoSourceEditor editorRef={editorRef} />
+        </ErrorBoundary>
 
         {/* Right: PDF Preview Placeholder */}
         <PreviewPlaceholder />
