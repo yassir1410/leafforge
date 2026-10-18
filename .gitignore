@@ -1,0 +1,53 @@
+# Node dependencies & build output
+node_modules/
+dist/
+dist-ssr/
+*.local
+
+# Tauri build outputs
+src-tauri/target/
+src-tauri/Cargo.lock.bak
+sysroot/
+dev_rpms/
+
+# Rust build artifacts
+target/
+**/*.rs.bk
+*.pdb
+
+# LaTeX temporary and build artifacts
+*.aux
+*.bbl
+*.bcf
+*.blg
+*.fdb_latexmk
+*.fls
+*.idx
+*.ilg
+*.ind
+*.lof
+*.log
+*.lot
+*.nav
+*.out
+*.run.xml
+*.snm
+*.synctex.gz
+*.synctex(busy)
+*.toc
+*.vrb
+_minted-*
+
+# Environment and Editor files
+.env
+.env.*
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+.idea/
+.vscode/*
+!.vscode/extensions.json
+*.sublime-workspace

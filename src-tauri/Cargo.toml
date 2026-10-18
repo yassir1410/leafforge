@@ -1,0 +1,26 @@
+[package]
+name = "leafforge"
+version = "0.1.0"
+description = "LeafForge — Modern Offline-First LaTeX Desktop IDE"
+authors = ["LeafForge Contributors"]
+edition = "2021"
+
+[lib]
+name = "leafforge_lib"
+crate-type = ["staticlib", "cdylib", "rlib"]
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+tauri = { version = "2", features = [] }
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+thiserror = "2.0"
+which = "7.0"
+tempfile = "3.17"
+walkdir = "2.5"
+chrono = { version = "0.4", features = ["serde"] }
+
+[dev-dependencies]
+tempfile = "3.17"
