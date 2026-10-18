@@ -70,7 +70,7 @@ export function App() {
           <span className="font-medium">{error}</span>
           <button
             onClick={clearError}
-            className="p-0.5 hover:bg-rose-600 rounded transition-colors"
+            className="p-0.5 hover:bg-rose-600 rounded-sm transition-colors"
           >
             <X className="w-3.5 h-3.5" />
           </button>

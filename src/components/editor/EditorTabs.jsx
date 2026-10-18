@@ -36,7 +36,7 @@ export function EditorTabs() {
 
   return (
     <>
-      <div className="h-9 bg-slate-100 dark:bg-slate-925 border-b border-slate-200 dark:border-slate-800 flex items-stretch overflow-x-auto select-none scrollbar-none flex-shrink-0">
+      <div className="h-9 bg-slate-100 dark:bg-slate-925 border-b border-slate-200 dark:border-slate-800 flex items-stretch overflow-x-auto select-none scrollbar-none shrink-0">
         {tabs.map((tab) => {
           const isActive = tab.id === activeTabId;
           const ext = tab.name.split('.').pop();
@@ -63,7 +63,7 @@ export function EditorTabs() {
               </span>
 
               {/* Dirty indicator / Close button */}
-              <div className="flex items-center justify-center w-4 h-4 flex-shrink-0">
+              <div className="flex items-center justify-center w-4 h-4 shrink-0">
                 {tab.isDirty ? (
                   <button
                     onClick={(e) => {

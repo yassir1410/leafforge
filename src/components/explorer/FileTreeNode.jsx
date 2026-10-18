@@ -34,7 +34,7 @@ export function FileTreeNode({ node, level = 0, onContextMenu }) {
         onClick={handleClick}
         onContextMenu={handleContextMenu}
         style={{ paddingLeft: `${level * 14 + 10}px` }}
-        className={`group flex items-center justify-between pr-2 py-1 cursor-pointer text-xs select-none transition-colors rounded-sm ${
+        className={`group flex items-center justify-between pr-2 py-1 cursor-pointer text-xs select-none transition-colors rounded-xs ${
           isActive
             ? 'bg-emerald-500/15 text-emerald-700 dark:text-emerald-300 font-medium'
             : 'text-slate-700 dark:text-slate-300 hover:bg-slate-200/60 dark:hover:bg-slate-800/60'
@@ -47,7 +47,7 @@ export function FileTreeNode({ node, level = 0, onContextMenu }) {
                 e.stopPropagation();
                 setIsOpen(!isOpen);
               }}
-              className="p-0.5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 rounded"
+              className="p-0.5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 rounded-sm"
             >
               {isOpen ? (
                 <ChevronDown className="w-3.5 h-3.5" />
@@ -70,7 +70,7 @@ export function FileTreeNode({ node, level = 0, onContextMenu }) {
         </div>
 
         {/* Right badges: Unsaved dirty dot or file size */}
-        <div className="flex items-center gap-1 flex-shrink-0">
+        <div className="flex items-center gap-1 shrink-0">
           {isDirty && (
             <span
               className="w-2 h-2 rounded-full bg-emerald-500"

@@ -42,7 +42,7 @@ export function SettingsModal() {
               <select
                 value={settings.fontSize}
                 onChange={(e) => settings.updateSetting('fontSize', Number(e.target.value))}
-                className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 rounded px-2.5 py-1.5 outline-none focus:ring-1 focus:ring-emerald-500"
+                className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 rounded-sm px-2.5 py-1.5 outline-hidden focus:ring-1 focus:ring-emerald-500"
               >
                 {[12, 13, 14, 15, 16, 18, 20].map((size) => (
                   <option key={size} value={size}>
@@ -60,7 +60,7 @@ export function SettingsModal() {
               <select
                 value={settings.tabSize}
                 onChange={(e) => settings.updateSetting('tabSize', Number(e.target.value))}
-                className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 rounded px-2.5 py-1.5 outline-none focus:ring-1 focus:ring-emerald-500"
+                className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 rounded-sm px-2.5 py-1.5 outline-hidden focus:ring-1 focus:ring-emerald-500"
               >
                 <option value={2}>2 spaces</option>
                 <option value={4}>4 spaces</option>
@@ -75,7 +75,7 @@ export function SettingsModal() {
               <select
                 value={settings.wordWrap}
                 onChange={(e) => settings.updateSetting('wordWrap', e.target.value)}
-                className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 rounded px-2.5 py-1.5 outline-none focus:ring-1 focus:ring-emerald-500"
+                className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 rounded-sm px-2.5 py-1.5 outline-hidden focus:ring-1 focus:ring-emerald-500"
               >
                 <option value="on">Enabled (Wrap lines)</option>
                 <option value="off">Disabled</option>
@@ -90,7 +90,7 @@ export function SettingsModal() {
               <select
                 value={settings.lineNumbers}
                 onChange={(e) => settings.updateSetting('lineNumbers', e.target.value)}
-                className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 rounded px-2.5 py-1.5 outline-none focus:ring-1 focus:ring-emerald-500"
+                className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 rounded-sm px-2.5 py-1.5 outline-hidden focus:ring-1 focus:ring-emerald-500"
               >
                 <option value="on">On</option>
                 <option value="off">Off</option>
@@ -112,7 +112,7 @@ export function SettingsModal() {
             <select
               value={settings.defaultCompiler}
               onChange={(e) => settings.updateSetting('defaultCompiler', e.target.value)}
-              className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 rounded px-2.5 py-1.5 outline-none focus:ring-1 focus:ring-emerald-500"
+              className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 rounded-sm px-2.5 py-1.5 outline-hidden focus:ring-1 focus:ring-emerald-500"
             >
               <option value="latexmk">latexmk — Automated multi-pass build tool</option>
               <option value="pdflatex">pdflatex — Standard TeX Live engine</option>
@@ -141,7 +141,7 @@ export function SettingsModal() {
               type="checkbox"
               checked={settings.autoSave}
               onChange={(e) => settings.updateSetting('autoSave', e.target.checked)}
-              className="w-4 h-4 text-emerald-600 rounded border-slate-300 focus:ring-emerald-500"
+              className="w-4 h-4 text-emerald-600 rounded-sm border-slate-300 focus:ring-emerald-500"
             />
           </div>
         </div>

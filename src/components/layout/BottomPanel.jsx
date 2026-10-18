@@ -53,7 +53,7 @@ export function BottomPanel() {
   return (
     <div
       style={{ height: `${bottomPanelHeight}px` }}
-      className="flex flex-col bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 flex-shrink-0 z-10 transition-all select-none"
+      className="flex flex-col bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 shrink-0 z-10 transition-all select-none"
     >
       {/* Top resize handle */}
       <ResizableHandle
@@ -68,7 +68,7 @@ export function BottomPanel() {
             onClick={() => setBottomPanelTab('environment')}
             className={`flex items-center gap-1.5 px-2.5 py-1 rounded font-medium transition-colors ${
               bottomPanelTab === 'environment'
-                ? 'text-emerald-600 dark:text-emerald-400 bg-white dark:bg-slate-800 shadow-sm'
+                ? 'text-emerald-600 dark:text-emerald-400 bg-white dark:bg-slate-800 shadow-xs'
                 : 'text-slate-500 hover:text-slate-700 dark:hover:text-slate-300'
             }`}
           >
@@ -83,7 +83,7 @@ export function BottomPanel() {
             onClick={() => setBottomPanelTab('output')}
             className={`flex items-center gap-1.5 px-2.5 py-1 rounded font-medium transition-colors ${
               bottomPanelTab === 'output'
-                ? 'text-emerald-600 dark:text-emerald-400 bg-white dark:bg-slate-800 shadow-sm'
+                ? 'text-emerald-600 dark:text-emerald-400 bg-white dark:bg-slate-800 shadow-xs'
                 : 'text-slate-500 hover:text-slate-700 dark:hover:text-slate-300'
             }`}
           >
@@ -95,7 +95,7 @@ export function BottomPanel() {
             onClick={() => setBottomPanelTab('problems')}
             className={`flex items-center gap-1.5 px-2.5 py-1 rounded font-medium transition-colors ${
               bottomPanelTab === 'problems'
-                ? 'text-emerald-600 dark:text-emerald-400 bg-white dark:bg-slate-800 shadow-sm'
+                ? 'text-emerald-600 dark:text-emerald-400 bg-white dark:bg-slate-800 shadow-xs'
                 : 'text-slate-500 hover:text-slate-700 dark:hover:text-slate-300'
             }`}
           >
@@ -110,7 +110,7 @@ export function BottomPanel() {
             <button
               onClick={fetchEnvironment}
               disabled={isDetecting}
-              className="p-1 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 rounded transition-colors"
+              className="p-1 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 rounded-sm transition-colors"
               title="Rescan LaTeX Environment"
             >
               <RefreshCw className={`w-3.5 h-3.5 ${isDetecting ? 'animate-spin' : ''}`} />
@@ -119,7 +119,7 @@ export function BottomPanel() {
 
           <button
             onClick={toggleBottomPanel}
-            className="p-1 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 rounded transition-colors"
+            className="p-1 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 rounded-sm transition-colors"
             title="Collapse Panel"
           >
             <ChevronDown className="w-3.5 h-3.5" />
@@ -148,7 +148,7 @@ export function BottomPanel() {
                 {latexEnv.engines.map((engine) => (
                   <div
                     key={engine.command}
-                    className="p-2 rounded border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/50 flex flex-col gap-1"
+                    className="p-2 rounded-sm border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/50 flex flex-col gap-1"
                   >
                     <div className="flex items-center justify-between">
                       <span className="font-bold font-sans text-slate-800 dark:text-slate-200">

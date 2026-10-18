@@ -80,7 +80,7 @@ export function ContextMenu({
             <span>New Folder</span>
           </button>
 
-          <div className="h-[1px] bg-slate-100 dark:bg-slate-800 my-1" />
+          <div className="h-px bg-slate-100 dark:bg-slate-800 my-1" />
         </>
       )}
 
@@ -103,7 +103,7 @@ export function ContextMenu({
         <span>Copy Path</span>
       </button>
 
-      <div className="h-[1px] bg-slate-100 dark:bg-slate-800 my-1" />
+      <div className="h-px bg-slate-100 dark:bg-slate-800 my-1" />
 
       <button
         onClick={() => {

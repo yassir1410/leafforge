@@ -18,7 +18,7 @@ export function PreviewPlaceholder() {
   return (
     <div
       style={{ width: `${previewWidth}px` }}
-      className="flex flex-col bg-slate-100 dark:bg-slate-950 border-l border-slate-200 dark:border-slate-800 flex-shrink-0 relative select-none z-10"
+      className="flex flex-col bg-slate-100 dark:bg-slate-950 border-l border-slate-200 dark:border-slate-800 shrink-0 relative select-none z-10"
     >
       {/* Left resize handle */}
       <ResizableHandle
@@ -36,15 +36,15 @@ export function PreviewPlaceholder() {
 
         {/* Disabled PDF view controls placeholder */}
         <div className="flex items-center gap-1 opacity-50 cursor-not-allowed">
-          <button disabled className="p-1 rounded text-slate-400 cursor-not-allowed" title="Zoom Out">
+          <button disabled className="p-1 rounded-sm text-slate-400 cursor-not-allowed" title="Zoom Out">
             <ZoomOut className="w-3.5 h-3.5" />
           </button>
           <span className="text-[11px] px-1 font-mono text-slate-400">100%</span>
-          <button disabled className="p-1 rounded text-slate-400 cursor-not-allowed" title="Zoom In">
+          <button disabled className="p-1 rounded-sm text-slate-400 cursor-not-allowed" title="Zoom In">
             <ZoomIn className="w-3.5 h-3.5" />
           </button>
-          <div className="h-3 w-[1px] bg-slate-300 dark:bg-slate-700 mx-1" />
-          <button disabled className="p-1 rounded text-slate-400 cursor-not-allowed" title="Rotate">
+          <div className="h-3 w-px bg-slate-300 dark:bg-slate-700 mx-1" />
+          <button disabled className="p-1 rounded-sm text-slate-400 cursor-not-allowed" title="Rotate">
             <RotateCw className="w-3.5 h-3.5" />
           </button>
         </div>
@@ -52,7 +52,7 @@ export function PreviewPlaceholder() {
 
       {/* Empty State Body — Clean Component Boundary for PDF.js Integration */}
       <div className="flex-1 flex flex-col items-center justify-center p-6 text-center text-xs">
-        <div className="w-16 h-20 rounded-lg border-2 border-dashed border-slate-300 dark:border-slate-700 flex flex-col items-center justify-center mb-4 bg-white/50 dark:bg-slate-900/50 shadow-sm">
+        <div className="w-16 h-20 rounded-lg border-2 border-dashed border-slate-300 dark:border-slate-700 flex flex-col items-center justify-center mb-4 bg-white/50 dark:bg-slate-900/50 shadow-xs">
           <FileText className="w-8 h-8 text-slate-400 dark:text-slate-500 mb-1" />
           <div className="w-8 h-1 bg-slate-300 dark:bg-slate-700 rounded-full" />
         </div>

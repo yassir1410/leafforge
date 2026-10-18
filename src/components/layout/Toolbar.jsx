@@ -42,12 +42,12 @@ export function Toolbar({ onUndo, onRedo }) {
   const isDirty = activeTab?.isDirty || false;
 
   return (
-    <header className="h-12 border-b border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900 px-3 flex items-center justify-between select-none z-20 flex-shrink-0">
+    <header className="h-12 border-b border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900 px-3 flex items-center justify-between select-none z-20 shrink-0">
       {/* Left: Branding & Project info */}
       <div className="flex items-center gap-3">
         {/* App Logo */}
         <div className="flex items-center gap-2 pr-3 border-r border-slate-300 dark:border-slate-700">
-          <div className="w-7 h-7 rounded bg-emerald-600 flex items-center justify-center text-white shadow-sm shadow-emerald-500/20">
+          <div className="w-7 h-7 rounded-sm bg-emerald-600 flex items-center justify-center text-white shadow-xs shadow-emerald-500/20">
             <svg
               className="w-4 h-4"
               viewBox="0 0 24 24"
@@ -64,7 +64,7 @@ export function Toolbar({ onUndo, onRedo }) {
           <span className="font-bold tracking-tight text-sm text-slate-900 dark:text-slate-100">
             LeafForge
           </span>
-          <span className="text-[10px] font-semibold uppercase px-1.5 py-0.5 rounded bg-emerald-500/10 text-emerald-600 dark:text-emerald-400">
+          <span className="text-[10px] font-semibold uppercase px-1.5 py-0.5 rounded-sm bg-emerald-500/10 text-emerald-600 dark:text-emerald-400">
             v0.1
           </span>
         </div>
@@ -147,7 +147,7 @@ export function Toolbar({ onUndo, onRedo }) {
           <select
             value={defaultCompiler}
             onChange={(e) => updateSetting('defaultCompiler', e.target.value)}
-            className="text-xs bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-800 dark:text-slate-200 rounded px-2 py-1 outline-none focus:ring-1 focus:ring-emerald-500 cursor-pointer"
+            className="text-xs bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-800 dark:text-slate-200 rounded-sm px-2 py-1 outline-hidden focus:ring-1 focus:ring-emerald-500 cursor-pointer"
             title="LaTeX Compilation Engine (Configured for Phase 02)"
           >
             <option value="latexmk">latexmk (Automated)</option>
@@ -161,15 +161,15 @@ export function Toolbar({ onUndo, onRedo }) {
         <div className="relative group">
           <button
             disabled
-            className="inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded bg-slate-200 dark:bg-slate-800 text-slate-400 dark:text-slate-500 cursor-not-allowed border border-slate-300 dark:border-slate-700 shadow-none opacity-80"
+            className="inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-sm bg-slate-200 dark:bg-slate-800 text-slate-400 dark:text-slate-500 cursor-not-allowed border border-slate-300 dark:border-slate-700 shadow-none opacity-80"
           >
             <Play className="w-3.5 h-3.5 fill-current" />
             <span>Recompile</span>
-            <span className="text-[9px] uppercase px-1 py-0.2 bg-slate-300 dark:bg-slate-700 rounded text-slate-500 dark:text-slate-400">
+            <span className="text-[9px] uppercase px-1 py-0.2 bg-slate-300 dark:bg-slate-700 rounded-sm text-slate-500 dark:text-slate-400">
               Phase 02
             </span>
           </button>
-          <div className="absolute top-full left-1/2 -translate-x-1/2 mt-1.5 px-2 py-1 bg-slate-900 text-white text-[11px] rounded shadow-lg whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50">
+          <div className="absolute top-full left-1/2 -translate-x-1/2 mt-1.5 px-2 py-1 bg-slate-900 text-white text-[11px] rounded-sm shadow-lg whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50">
             LaTeX compilation pipeline integrates in Phase 02
           </div>
         </div>
@@ -214,12 +214,12 @@ export function Toolbar({ onUndo, onRedo }) {
           <PanelRight className="w-4 h-4" />
         </button>
 
-        <div className="h-4 w-[1px] bg-slate-300 dark:bg-slate-700 mx-1" />
+        <div className="h-4 w-px bg-slate-300 dark:bg-slate-700 mx-1" />
 
         {/* Theme switcher */}
         <button
           onClick={toggleTheme}
-          className="p-1.5 rounded text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors"
+          className="p-1.5 rounded-sm text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors"
           title={`Switch to ${theme === 'dark' ? 'Light' : 'Dark'} Mode`}
         >
           {theme === 'dark' ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
@@ -228,7 +228,7 @@ export function Toolbar({ onUndo, onRedo }) {
         {/* Settings button */}
         <button
           onClick={openSettings}
-          className="p-1.5 rounded text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors"
+          className="p-1.5 rounded-sm text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors"
           title="LeafForge Settings"
         >
           <Settings className="w-4 h-4" />

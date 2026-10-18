@@ -61,7 +61,7 @@ export function NewProjectModal() {
     >
       <form onSubmit={handleCreate} className="space-y-3 text-xs">
         {error && (
-          <div className="p-2.5 rounded bg-rose-50 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-800 text-rose-600 dark:text-rose-400">
+          <div className="p-2.5 rounded-sm bg-rose-50 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-800 text-rose-600 dark:text-rose-400">
             {error}
           </div>
         )}
@@ -74,7 +74,7 @@ export function NewProjectModal() {
             type="text"
             value={projectName}
             onChange={(e) => setProjectName(e.target.value)}
-            className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 rounded px-2.5 py-1.5 outline-none focus:ring-1 focus:ring-emerald-500"
+            className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 rounded-sm px-2.5 py-1.5 outline-hidden focus:ring-1 focus:ring-emerald-500"
             placeholder="e.g. Quantum Computing Thesis"
             required
           />
@@ -88,7 +88,7 @@ export function NewProjectModal() {
             type="text"
             value={projectPath}
             onChange={(e) => setProjectPath(e.target.value)}
-            className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 rounded px-2.5 py-1.5 outline-none focus:ring-1 focus:ring-emerald-500 font-mono text-[11px]"
+            className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 rounded-sm px-2.5 py-1.5 outline-hidden focus:ring-1 focus:ring-emerald-500 font-mono text-[11px]"
             required
           />
         </div>
@@ -149,7 +149,7 @@ export function OpenProjectModal() {
     >
       <div className="space-y-4 text-xs">
         {error && (
-          <div className="p-2.5 rounded bg-rose-50 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-800 text-rose-600 dark:text-rose-400">
+          <div className="p-2.5 rounded-sm bg-rose-50 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-800 text-rose-600 dark:text-rose-400">
             {error}
           </div>
         )}
@@ -162,7 +162,7 @@ export function OpenProjectModal() {
             type="text"
             value={pathInput}
             onChange={(e) => setPathInput(e.target.value)}
-            className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 rounded px-2.5 py-1.5 outline-none focus:ring-1 focus:ring-emerald-500 font-mono text-[11px]"
+            className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 rounded-sm px-2.5 py-1.5 outline-hidden focus:ring-1 focus:ring-emerald-500 font-mono text-[11px]"
             placeholder="/path/to/latex/project"
           />
         </div>
@@ -175,7 +175,7 @@ export function OpenProjectModal() {
           </h4>
 
           {recentProjects.length > 0 ? (
-            <div className="border border-slate-200 dark:border-slate-800 rounded divide-y divide-slate-100 dark:divide-slate-800 max-h-48 overflow-y-auto">
+            <div className="border border-slate-200 dark:border-slate-800 rounded-sm divide-y divide-slate-100 dark:divide-slate-800 max-h-48 overflow-y-auto">
               {recentProjects.map((p) => (
                 <div
                   key={p.path}
@@ -188,12 +188,12 @@ export function OpenProjectModal() {
                     </div>
                     <div className="text-[11px] text-slate-400 truncate font-mono">{p.path}</div>
                   </div>
-                  <Folder className="w-4 h-4 text-slate-400 group-hover:text-emerald-500 flex-shrink-0" />
+                  <Folder className="w-4 h-4 text-slate-400 group-hover:text-emerald-500 shrink-0" />
                 </div>
               ))}
             </div>
           ) : (
-            <div className="text-slate-400 text-center py-4 border border-dashed border-slate-200 dark:border-slate-800 rounded">
+            <div className="text-slate-400 text-center py-4 border border-dashed border-slate-200 dark:border-slate-800 rounded-sm">
               No recent projects recorded yet.
             </div>
           )}
@@ -258,7 +258,7 @@ export function NewFileDialog() {
     >
       <form onSubmit={handleSubmit} className="space-y-3 text-xs">
         {error && (
-          <div className="p-2.5 rounded bg-rose-50 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-800 text-rose-600 dark:text-rose-400">
+          <div className="p-2.5 rounded-sm bg-rose-50 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-800 text-rose-600 dark:text-rose-400">
             {error}
           </div>
         )}
@@ -271,7 +271,7 @@ export function NewFileDialog() {
             type="text"
             value={name}
             onChange={(e) => setName(e.target.value)}
-            className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 rounded px-2.5 py-1.5 outline-none focus:ring-1 focus:ring-emerald-500 font-mono text-[11px]"
+            className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 rounded-sm px-2.5 py-1.5 outline-hidden focus:ring-1 focus:ring-emerald-500 font-mono text-[11px]"
             placeholder={isFolder ? 'figures' : 'bibliography.bib'}
             autoFocus
             required
@@ -330,7 +330,7 @@ export function RenameDialog() {
     >
       <form onSubmit={handleSubmit} className="space-y-3 text-xs">
         {error && (
-          <div className="p-2.5 rounded bg-rose-50 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-800 text-rose-600 dark:text-rose-400">
+          <div className="p-2.5 rounded-sm bg-rose-50 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-800 text-rose-600 dark:text-rose-400">
             {error}
           </div>
         )}
@@ -343,7 +343,7 @@ export function RenameDialog() {
             type="text"
             value={newName}
             onChange={(e) => setNewName(e.target.value)}
-            className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 rounded px-2.5 py-1.5 outline-none focus:ring-1 focus:ring-emerald-500 font-mono text-[11px]"
+            className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 rounded-sm px-2.5 py-1.5 outline-hidden focus:ring-1 focus:ring-emerald-500 font-mono text-[11px]"
             autoFocus
             required
           />
@@ -394,8 +394,8 @@ export function DeleteConfirmDialog() {
       }
     >
       <div className="space-y-3 text-xs text-slate-700 dark:text-slate-300">
-        <div className="flex items-start gap-2.5 p-3 rounded bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800/50 text-amber-800 dark:text-amber-200">
-          <AlertTriangle className="w-5 h-5 flex-shrink-0 text-amber-600 dark:text-amber-400" />
+        <div className="flex items-start gap-2.5 p-3 rounded-sm bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800/50 text-amber-800 dark:text-amber-200">
+          <AlertTriangle className="w-5 h-5 shrink-0 text-amber-600 dark:text-amber-400" />
           <p>
             Are you sure you want to permanently delete{' '}
             <strong className="font-semibold text-slate-900 dark:text-white">
@@ -406,7 +406,7 @@ export function DeleteConfirmDialog() {
         </div>
 
         {error && (
-          <div className="p-2.5 rounded bg-rose-50 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-800 text-rose-600 dark:text-rose-400">
+          <div className="p-2.5 rounded-sm bg-rose-50 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-800 text-rose-600 dark:text-rose-400">
             {error}
           </div>
         )}

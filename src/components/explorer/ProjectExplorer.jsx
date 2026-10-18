@@ -57,7 +57,7 @@ export function ProjectExplorer() {
     <aside
       style={{ width: `${explorerWidth}px` }}
       onContextMenu={handleRootContextMenu}
-      className="flex flex-col bg-slate-50 dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 flex-shrink-0 relative select-none z-10"
+      className="flex flex-col bg-slate-50 dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 shrink-0 relative select-none z-10"
     >
       {/* Explorer Header */}
       <div className="h-8 px-3 flex items-center justify-between border-b border-slate-200 dark:border-slate-800 text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
@@ -67,14 +67,14 @@ export function ProjectExplorer() {
           <div className="flex items-center gap-0.5">
             <button
               onClick={() => openNewFileDialog('', false)}
-              className="p-1 rounded text-slate-500 hover:text-slate-800 dark:hover:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors"
+              className="p-1 rounded-sm text-slate-500 hover:text-slate-800 dark:hover:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors"
               title="New File in Root"
             >
               <FilePlus className="w-3.5 h-3.5" />
             </button>
             <button
               onClick={() => openNewFileDialog('', true)}
-              className="p-1 rounded text-slate-500 hover:text-slate-800 dark:hover:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors"
+              className="p-1 rounded-sm text-slate-500 hover:text-slate-800 dark:hover:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors"
               title="New Folder in Root"
             >
               <FolderPlus className="w-3.5 h-3.5" />
@@ -82,7 +82,7 @@ export function ProjectExplorer() {
             <button
               onClick={refreshFileTree}
               disabled={isLoading}
-              className="p-1 rounded text-slate-500 hover:text-slate-800 dark:hover:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors"
+              className="p-1 rounded-sm text-slate-500 hover:text-slate-800 dark:hover:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors"
               title="Refresh File Tree"
             >
               <RefreshCw className={`w-3.5 h-3.5 ${isLoading ? 'animate-spin' : ''}`} />
